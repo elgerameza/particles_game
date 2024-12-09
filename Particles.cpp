@@ -1,5 +1,3 @@
-#include "Particles.h"
-
 bool Particle::almostEqual(double a, double b, double eps)
 {
 	return fabs(a - b) < eps;
@@ -140,9 +138,40 @@ void Particle::unitTests()
 	}
 	cout << "Score: " << score << " / 7" << endl;
 }
-Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition)
+Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition) : m_A(2, numPoints)
 {
-
+	m_ttl = TTL;
+	m_numPoints = numPoints;
+	m_radiansPerSec = (float)rand() / (RAND_MAX)* M_PI;
+	m_cartesianPlane.setCenter(0, 0);
+	m_cartesianPlane.setSize(target.getSize().x, (-1.0) * target.getSize().y);
+	target.mapPixelToCoords(mouseClickPosition, m_cartesianPlane) = m_centerCoordinate;
+	m_vx = rand() % 2;
+	if (m_vx != 0)
+	{
+		m_vx = m_vx * -1;
+	}
+	m_vy = rand() % 2;
+	m_color1.r = 255;
+	m_color1.g = 255;
+	m_color1.b = 255;
+	m_color2.r = 255;
+	m_color2.g = 255;
+	m_color2.b = 255;
+	float theta = (M_PI / 2);
+	float dTheta = 2 * M_PI / (numPoints - 1);
+	for (int j = 0; j < numPoints; j++)
+	{
+		float r;
+		float dx;
+		float dy;
+		r = rand() % 20 + 80;
+		dx = r * cos(theta);
+		dy = r * sin(theta);
+		m_A(0, j) = m_centerCoordinate.x + dx;
+		m_A(1, j) = m_centerCoordinate.y + dy;
+		theta += dTheta;
+	}
 }
 void Particle::draw(RenderTarget& target, RenderStates states) const
 {
@@ -161,14 +190,6 @@ void Particle::rotate(double theta)
 
 }
 void Particle::scale(double c)
-{
-
-}
-bool Particle::almostEqual(double a, double b, double eps = 0.0001)
-{
-	
-}
-void Particle::unitTests()
 {
 
 }
