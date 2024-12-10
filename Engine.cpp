@@ -9,13 +9,6 @@ Engine::Engine()
 void Engine::run()
 {
 	Clock clock;
-	Time time1 = clock.getElapsedTime();
-	Time time2 = clock.restart();
-	Time t1 = seconds(0.1f);
-	Int32 milli = t1.asMilliseconds(); //100
-
-
-
 
 	cout << "Starting Particle unit tests..." << endl;
 	Particle p(m_Window, 4, { (int)m_Window.getSize().x / 2, (int)m_Window.getSize().y / 2 });
@@ -33,44 +26,44 @@ void Engine::run()
 }
 void Engine::input()
 {
-	while (m_Window.isOpen())
-	{
-		Event event;
-		while (m_Window.pollEvent(event))
-		{
-			if (event.type==Event::MouseButtonPressed == Mouse::Left)
-			{
-				if (event.mouseButton.button == Mouse::Right)
-				{
-
-				}
-			}
-			else if(event.type == Event::MouseButtonPressed == Mouse::Left) 
-			{
-				if (event.mouseButton.button == Mouse::Left)
-				{
-
-				}
+	sf::Event event;
+	while (m_Window.pollEvent(event)) {
+		// Handle window close event
+		if (event.type == sf::Event::Closed) {
+			m_Window.close();
+		}
+		// Handle key pressed event
+		else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+			m_Window.close();
+		}
+		// Handle left mouse button pressed event
+		else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+			sf::Vector2i mousePos = sf::Mouse::getPosition(m_Window);
+			// Create 5 particles
+			for (int i = 0; i < 5; ++i) {
+				int numPoints = rand() % 26 + 25; // Random number in range [25:50]
+				m_particles.emplace_back(m_Window, numPoints, mousePos);
 			}
 		}
 	}
 }
 void Engine::update(float dtAsSeconds)
 {
-	for (int i = 0; i < m_particles.size(); i++)
-	{
-		m_particles[i].update(dtAsSeconds);
-		if (> 0.0)
-		{
-			m_particles.erase(m_particles.begin() + i);
+	for (int i = 0; i < m_particles.size();) {
+		if (m_particles[i].getTTL() > 0.0f) {
+			m_particles[i].update(dtAsSeconds);
+			++i; // Only increment if no particle is erased
+		}
+		else {
+			m_particles.erase(m_particles.begin() + i); // Erase and keep the index at the same position
 		}
 	}
 }
 void Engine::draw()
 {
 	m_Window.clear();
-	for (int i = 0; i < m_particles.size(); i++)
-	{
-		
+	for (const auto& particle : m_particles) {
+		m_Window.draw(particle); // Draw each particle
 	}
+	m_Window.display();
 }

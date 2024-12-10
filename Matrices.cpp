@@ -101,10 +101,8 @@ namespace Matrices
 	}
 	ScalingMatrix::ScalingMatrix(double scale) : Matrix(2,2)
 	{
-
 	}
 	RotationMatrix::RotationMatrix(double theta) : Matrix(2,2)
 	{
-
 	}
 }
