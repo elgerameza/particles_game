@@ -84,7 +84,7 @@ namespace Matrices
 
 	///Output matrix.
 	///Separate columns by ' ' and rows by '\n'
-	ostream& Matrices::operator<<(ostream& os, const Matrix& a)
+	ostream& operator<<(ostream& os, const Matrix& a)
 	{
 		for (int i = 0; i < a.getRows(); ++i)
 		{

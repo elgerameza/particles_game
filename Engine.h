@@ -1,7 +1,7 @@
 #pragma once
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Particle.h"
+#include "Particles.h"
 using namespace sf;
 using namespace std;
 
