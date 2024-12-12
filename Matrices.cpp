@@ -1,4 +1,3 @@
-
 #include "Matrices.h"
 namespace Matrices
 {
@@ -10,7 +9,7 @@ namespace Matrices
 		a.resize(rows);
 		for (int i = 0; i < rows; ++i)
 		{
-			a[i].resize(cols, 0);
+			a[i].resize(cols);
 		}
 	}
 	///Add each corresponding element.
@@ -109,6 +108,8 @@ namespace Matrices
 	ScalingMatrix::ScalingMatrix(double scale) : Matrix(2, 2)
 	{
 		a[0][0] = scale;
+		a[0][1] = 0;
+		a[1][0] = 0;
 		a[1][1] = scale;
 	}
 	RotationMatrix::RotationMatrix(double theta) : Matrix(2, 2)

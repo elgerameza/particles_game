@@ -1,4 +1,3 @@
-
 #include "Particles.h"
 
 
@@ -141,33 +140,32 @@ void Particle::unitTests()
 }
 Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition) : m_A(2, numPoints)
 {
-	//cout << m_A.getRows() << " " << m_A.getCols() << endl;
 	m_ttl = TTL;
 	m_numPoints = numPoints;
-	m_radiansPerSec = (float)rand() / (RAND_MAX)*M_PI;
-	m_cartesianPlane.setCenter(0, 0);
+	m_radiansPerSec = (float)rand() / (RAND_MAX)* M_PI;
+	m_cartesianPlane.setCenter(0.0, 0.0);
 	m_cartesianPlane.setSize(target.getSize().x, (-1.0) * target.getSize().y);
-	target.mapPixelToCoords(mouseClickPosition, m_cartesianPlane) = m_centerCoordinate;
-	m_vx = rand() % 2;
-	if (m_vx != 0)
-	{
-		m_vx = m_vx * - 1;
+	m_centerCoordinate = target.mapPixelToCoords(mouseClickPosition, m_cartesianPlane);
+	m_vx = 100 + (rand() % 401);
+	m_vy = 100 + (rand() % 401);
+
+	if (rand() % 2 != 0) {
+		m_vx *= -1;
 	}
-	m_vy = rand() % 2;
 	m_color1.r = 255;
 	m_color1.g = 255;
 	m_color1.b = 255;
 	m_color2.r = rand() % 256;
 	m_color2.g = rand() % 256;
 	m_color2.b = rand() % 256;
-	float theta = (M_PI / 2.0);
-	float dTheta = 2.0 * M_PI / (numPoints - 1);
+	float theta = (M_PI / 2);
+	float dTheta = 2 * M_PI / (numPoints - 1);
 	for (int j = 0; j < numPoints; j++)
 	{
 		float r;
 		float dx;
 		float dy;
-		r = rand() % 20 + 80;
+		r = 20 + (rand() % 61);
 		dx = r * cos(theta);
 		dy = r * sin(theta);
 		m_A(0, j) = m_centerCoordinate.x + dx;
@@ -183,25 +181,29 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
 	lines[0].color = m_color1;
 	for (int j = 1; j < m_numPoints; j++)
 	{
-		target.mapCoordsToPixel(lines[j].position, m_cartesianPlane);
+		//target.mapCoordsToPixel(lines[j].position, m_cartesianPlane);
+		Vector2f column_coordinate = sf::Vector2f(m_A(0, j - 1), m_A(1, j - 1));
+		lines[j].position = sf::Vector2f(target.mapCoordsToPixel(column_coordinate, m_cartesianPlane));
 		lines[j].color = m_color2;
+
 	}
 	target.draw(lines); // draw the vertexArray when the loop is finish
 }
 void Particle::update(float dt)
 {
-	dt = dt - m_ttl;
+	//dt -= m_ttl; //error
+	m_ttl -= dt;
 	rotate(dt * m_radiansPerSec);
 	scale(SCALE);
 	float dx, dy;
 	dx = m_vx * dt;
-	m_vy = m_vy - G * dt;
+	m_vy -= G * dt; //m_vy = (m_vy - G) * dt; error
 	dy = m_vy * dt;
 	translate(dx, dy);
 }
 void Particle::translate(double xShift, double yShift)
 {
-	TranslationMatrix T(xShift, yShift, m_A.getCols());
+	TranslationMatrix T(xShift,yShift,m_A.getCols());
 	m_A = T + m_A;
 	m_centerCoordinate.x += xShift;
 	m_centerCoordinate.y += yShift;

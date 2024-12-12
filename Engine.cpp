@@ -2,9 +2,9 @@
 
 Engine::Engine()
 {
-	VideoMode vm(1920, 1080);
+	VideoMode vm = VideoMode::getDesktopMode();
 	m_Window.create(vm, "particles pj", Style::Default);
-	
+
 }
 void Engine::run()
 {
@@ -49,13 +49,13 @@ void Engine::input()
 }
 void Engine::update(float dtAsSeconds)
 {
-	for (int i = 0; i < m_particles.size();) {
-		if (m_particles[i].getTTL() > 0.0f) {
-			m_particles[i].update(dtAsSeconds);
+	for (auto i = m_particles.begin(); i != m_particles.end();) {
+		if (i -> getTTL() > 0.0) {
+			i -> update(dtAsSeconds);
 			++i; // Only increment if no particle is erased
 		}
 		else {
-			m_particles.erase(m_particles.begin() + i); // Erase and keep the index at the same position
+			i = m_particles.erase(i); // Erase and keep the index at the same position
 		}
 	}
 }
