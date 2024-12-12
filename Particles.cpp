@@ -1,3 +1,4 @@
+
 #include "Particles.h"
 
 
@@ -140,9 +141,10 @@ void Particle::unitTests()
 }
 Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition) : m_A(2, numPoints)
 {
+	//cout << m_A.getRows() << " " << m_A.getCols() << endl;
 	m_ttl = TTL;
 	m_numPoints = numPoints;
-	m_radiansPerSec = (float)rand() / (RAND_MAX)* M_PI;
+	m_radiansPerSec = (float)rand() / (RAND_MAX)*M_PI;
 	m_cartesianPlane.setCenter(0, 0);
 	m_cartesianPlane.setSize(target.getSize().x, (-1.0) * target.getSize().y);
 	target.mapPixelToCoords(mouseClickPosition, m_cartesianPlane) = m_centerCoordinate;
@@ -158,8 +160,8 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
 	m_color2.r = rand() % 256;
 	m_color2.g = rand() % 256;
 	m_color2.b = rand() % 256;
-	float theta = (M_PI / 2);
-	float dTheta = 2 * M_PI / (numPoints - 1);
+	float theta = (M_PI / 2.0);
+	float dTheta = 2.0 * M_PI / (numPoints - 1);
 	for (int j = 0; j < numPoints; j++)
 	{
 		float r;
@@ -199,7 +201,7 @@ void Particle::update(float dt)
 }
 void Particle::translate(double xShift, double yShift)
 {
-	TranslationMatrix T(xShift,yShift,m_A.getCols());
+	TranslationMatrix T(xShift, yShift, m_A.getCols());
 	m_A = T + m_A;
 	m_centerCoordinate.x += xShift;
 	m_centerCoordinate.y += yShift;

@@ -2,8 +2,8 @@
 
 Engine::Engine()
 {
-	VideoMode vm(1920,1080);
-	m_Window.create(vm,"particles pj", Style::Default);
+	VideoMode vm(1920, 1080);
+	m_Window.create(vm, "particles pj", Style::Default);
 	
 }
 void Engine::run()
@@ -11,7 +11,7 @@ void Engine::run()
 	Clock clock;
 
 	cout << "Starting Particle unit tests..." << endl;
-	Particle p(m_Window, 4, { (int)m_Window.getSize().x / 2, (int)m_Window.getSize().y / 2 });
+	Particle p(m_Window, 4, { (int)m_Window.getSize().x, (int)m_Window.getSize().y });
 	p.unitTests();
 	cout << "Unit tests complete.  Starting engine..." << endl;
 
@@ -26,19 +26,19 @@ void Engine::run()
 }
 void Engine::input()
 {
-	sf::Event event;
+	Event event;
 	while (m_Window.pollEvent(event)) {
 		// Handle window close event
-		if (event.type == sf::Event::Closed) {
+		if (event.type == Event::Closed) {
 			m_Window.close();
 		}
 		// Handle key pressed event
-		else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+		else if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
 			m_Window.close();
 		}
 		// Handle left mouse button pressed event
-		else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-			sf::Vector2i mousePos = sf::Mouse::getPosition(m_Window);
+		else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
+			Vector2i mousePos = Mouse::getPosition(m_Window);
 			// Create 5 particles
 			for (int i = 0; i < 5; ++i) {
 				int numPoints = rand() % 26 + 25; // Random number in range [25:50]
