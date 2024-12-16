@@ -38,9 +38,9 @@ void Engine::input()
 		}
 		// Handle left mouse button pressed event
 		else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
-			Vector2i mousePos = Mouse::getPosition(m_Window);
 			// Create 5 particles
-			for (int i = 0; i < 5; ++i) {
+			for (int i = 0; i < 10; ++i) {
+				Vector2i mousePos = Mouse::getPosition(m_Window);
 				int numPoints = rand() % 26 + 25; // Random number in range [25:50]
 				m_particles.emplace_back(m_Window, numPoints, mousePos);
 			}

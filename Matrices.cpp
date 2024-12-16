@@ -90,7 +90,7 @@ namespace Matrices
 		{
 			for (int j = 0; j < a.getCols(); ++j)
 			{
-				os << setw(10) << a(i, j) << " ";
+				os << setw(11) << a(i, j) << " ";
 			}
 			os << endl;
 		}
